@@ -56,8 +56,8 @@ npm install
 npm run dev
 
 
-O frontend roda geralmente em http://localhost:5173
-O backend roda em http://localhost:3000
+O frontend roda geralmente no localhost
+O backend roda na PORT 3000
 
 🔹 Scripts unificados (opcional)
 
