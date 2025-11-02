@@ -1,26 +1,35 @@
-import TarefaItem from './tarefaItem';
+import React from "react";
+import TarefaItem from "./tarefaItem";
 
 function TarefaLista({ tarefas, onToggle, onDelete, onSelect }) {
   if (!tarefas || tarefas.length === 0) {
     return (
-      <div style={{
-        textAlign: 'center',
-        color: '#94a3b8',
-        padding: '3rem',
-        background: '#1e293b',
-        borderRadius: '1rem',
-        boxShadow: '6px 6px 12px #0f172a, -6px -6px 12px #1e293b'
-      }}>
-        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📝</div>
-        Nenhuma tarefa encontrada
+      <div className="w-full flex justify-center mt-6">
+        <div
+          role="alert"
+          className="max-w-xl w-full mx-4 bg-yellow-50/90 backdrop-blur-sm text-yellow-900 rounded-full px-6 py-4 shadow-2xl border border-yellow-200 flex items-center gap-4"
+        >
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-400 text-yellow-900 text-2xl shadow-md">⚠️</div>
+          </div>
+
+          <div className="text-left">
+            <div className="text-lg font-semibold">Any Task Found</div>
+            <div className="text-sm text-yellow-800/90">There are currently no tasks. Add a new task to get started.</div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="flex flex-col gap-4">
       {tarefas.map((tarefa) => (
-        <div key={tarefa.id} onClick={() => onSelect && onSelect(tarefa)} style={{ cursor: 'pointer' }}>
+        <div
+          key={tarefa.id}
+          onClick={() => onSelect && onSelect(tarefa)}
+          className="cursor-pointer transition-all hover:scale-[1.01] hover:shadow-lg active:scale-[0.99]"
+        >
           <TarefaItem
             tarefa={tarefa}
             onToggle={onToggle}

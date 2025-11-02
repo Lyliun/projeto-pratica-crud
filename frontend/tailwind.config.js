@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Correct content paths: files under frontend root
   content: [
-    "./frontend/index.html",
-    "./frontend/src/**/*.{js,ts,jsx,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
