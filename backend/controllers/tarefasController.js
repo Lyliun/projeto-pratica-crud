@@ -24,6 +24,7 @@ export function criarTarefa(req, res) {
   const novaTarefa = {
     id: Date.now(),
     titulo: req.body.titulo,
+    descricao: req.body.descricao || '',
     concluida: false
   };
   tarefas.push(novaTarefa);

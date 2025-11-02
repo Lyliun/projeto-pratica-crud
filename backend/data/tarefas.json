@@ -1,12 +1,8 @@
 [
   {
-    "id": 1761527905856,
-    "titulo": "Compras",
-    "concluida": false
-  },
-  {
-    "id": 1761703388300,
-    "titulo": "Estudar",
+    "id": 1762051567794,
+    "titulo": "Compras do mês",
+    "descricao": "Fazer as compras do mês",
     "concluida": false
   }
 ]

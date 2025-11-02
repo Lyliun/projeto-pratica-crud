@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { api } from './services/api';
-import TarefaForm from './components/tarefaForm';
+import TarefaForm from './components/TarefaForm'
 import TarefaLista from './components/tarefaLista';
+import TarefaDescricao from './components/tarefaDescricao';
 
 function App() {
   const [tarefas, setTarefas] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+  const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
+  const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
 
   useEffect(() => {
     carregarTarefas();
@@ -21,6 +23,21 @@ function App() {
     } catch (error) {
       console.error('Erro ao carregar tarefas:', error);
       setErro('Erro ao carregar tarefas. Verifique se o backend está rodando.');
+      // ✅ ADICIONADO: Se der erro, carrega dados de exemplo
+      setTarefas([
+        { 
+          id: 1, 
+          titulo: "Exemplo 1", 
+          descricao: "Esta é uma tarefa de exemplo", 
+          concluida: false 
+        },
+        { 
+          id: 2, 
+          titulo: "Exemplo 2", 
+          descricao: "Outra tarefa de exemplo", 
+          concluida: true 
+        }
+      ]);
     } finally {
       setCarregando(false);
     }
@@ -31,19 +48,24 @@ function App() {
   };
 
   const handleToggleTarefa = async (id) => {
+    // ✅ Atualiza localmente primeiro (otimista)
+    setTarefas(tarefas.map(t => 
+      t.id === id ? { ...t, concluida: !t.concluida } : t
+    ));
+
     try {
       const tarefa = tarefas.find(t => t.id === id);
-      const response = await api.put(`/tarefas/${id}`, {
+      await api.put(`/tarefas/${id}`, {
         ...tarefa,
         concluida: !tarefa.concluida
       });
-      
-      setTarefas(tarefas.map(t => 
-        t.id === id ? response.data : t
-      ));
     } catch (error) {
       console.error('Erro ao atualizar tarefa:', error);
-      alert('Erro ao atualizar tarefa. Tente novamente.');
+      // Reverte a mudança se der erro
+      setTarefas(tarefas.map(t => 
+        t.id === id ? { ...t, concluida: !t.concluida } : t
+      ));
+      alert('Erro ao atualizar tarefa. Verifique se o backend está rodando.');
     }
   };
 
@@ -52,12 +74,25 @@ function App() {
       return;
     }
 
+    // ✅ Remove localmente primeiro (otimista)
+    const tarefasAntigas = tarefas;
+    setTarefas(tarefas.filter(t => t.id !== id));
+
     try {
       await api.delete(`/tarefas/${id}`);
-      setTarefas(tarefas.filter(t => t.id !== id));
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
-      alert('Erro ao deletar tarefa. Tente novamente.');
+      // Reverte se der erro
+      setTarefas(tarefasAntigas);
+      alert('Erro ao deletar tarefa. Verifique se o backend está rodando.');
+    }
+    // Atualiza seleção: se a tarefa removida estava selecionada, limpa a seleção
+    const novas = tarefasAntigas.filter(t => t.id !== id);
+    if (tarefaSelecionada && tarefaSelecionada.id === id) {
+      setTarefaSelecionada(null);
+    } else if (novas.length === 0) {
+      // se não houverem mais tarefas, limpa também
+      setTarefaSelecionada(null);
     }
   };
 
@@ -175,11 +210,15 @@ function App() {
             Carregando tarefas...
           </div>
         ) : (
-          <TarefaLista
-            tarefas={tarefas}
-            onToggle={handleToggleTarefa}
-            onDelete={handleDeleteTarefa}
-          />
+          <>
+            <TarefaLista
+              tarefas={tarefas}
+              onToggle={handleToggleTarefa}
+              onDelete={handleDeleteTarefa}
+              onSelect={setTarefaSelecionada}
+            />
+            <TarefaDescricao tarefa={tarefaSelecionada} />
+          </>
         )}
       </div>
     </div>
