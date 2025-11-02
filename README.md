@@ -1,73 +1,117 @@
-To-Do List Fullstack
+# 📝 To-Do List — Projeto Prático CRUD
 
-Projeto CRUD completo de uma To-Do List, desenvolvido com React no frontend e Node.js + Express no backend. Permite criar, listar, atualizar e excluir tarefas, integrando frontend e backend via API REST e armazenando dados em JSON.
+> Um aplicativo moderno de gerenciamento de tarefas desenvolvido com **React**, **Vite**, **TailwindCSS** e integração com backend em **Node.js / Express**.
 
-🔹 Tecnologias
+---
 
-Frontend: React, Vite, Tailwind CSS, Axios
+## 🌟 Visão Geral
 
-Backend: Node.js, Express, CORS, Nodemon
+Este projeto foi desenvolvido como parte do aprendizado em **Desenvolvimento Fullstack**, com o objetivo de praticar conceitos fundamentais de **CRUD (Create, Read, Update, Delete)**, **componentização em React**, **estilização com Tailwind**, e **integração com APIs**.
 
-Gerenciamento de estado: React Hooks (useState, useEffect)
+A aplicação permite que o usuário crie, visualize, atualize e exclua tarefas, mantendo uma interface elegante e responsiva.
 
-Controle de versão: Git/GitHub
+---
 
-🔹 Funcionalidades
+## 🚀 Funcionalidades
 
-Adicionar novas tarefas
+- ✅ **Criar tarefas** com título e descrição.  
+- 🗂️ **Listar todas as tarefas** cadastradas no sistema.  
+- ✏️ **Editar tarefas existentes** com atualização instantânea.  
+- ❌ **Excluir tarefas** individualmente.  
+- 🧭 **Filtrar tarefas concluídas e pendentes**.  
+- 🧹 **Limpeza automática** da descrição quando não houver tarefas listadas.  
+- 💅 **Interface moderna** com TailwindCSS e modo escuro.
 
-Editar tarefas existentes
+---
 
-Marcar tarefas como concluídas
+## 🧱 Estrutura do Projeto
 
-Excluir tarefas
-
-Comunicação frontend ↔ backend via API REST
-
-🔹 Estrutura do projeto
-projeto-pratica-crud/
+```bash
+frontend/
 │
-├── backend/            ← Servidor Node.js + Express
-│   ├── server.js
-│   ├── routes/
-│   ├── controllers/
-│   └── tarefas.json
+├── src/
+│   ├── components/
+│   │   ├── TarefaForm.jsx        # Formulário para criar/editar tarefas
+│   │   ├── TarefaList.jsx        # Lista de tarefas
+│   │   ├── TarefaDescricao.jsx   # Exibe descrição da tarefa selecionada
+│   │
+│   ├── services/
+│   │   └── api.js                # Configuração e integração com backend
+│   │
+│   ├── App.jsx                   # Componente principal
+│   ├── main.jsx                  # Ponto de entrada da aplicação
+│   ├── index.css                 # Configuração do Tailwind
+│   ├── App.css                   # Estilos adicionais (customização)
 │
-└── frontend/           ← Interface React
-    ├── src/
-    │   ├── components/
-    │   └── App.jsx
-    ├── package.json
-    └── vite.config.js
+├── tailwind.config.js            # Configuração do Tailwind
+├── postcss.config.js             # Configuração do PostCSS
+├── package.json
+│
+└── ...
 
-🔹 Como rodar o projeto
+| Tecnologia                  | Descrição                                        |
+| --------------------------- | ------------------------------------------------ |
+| ⚛️ **React.js (Vite)**      | Biblioteca para construção da interface.         |
+| 💨 **TailwindCSS**          | Framework utilitário de CSS para design moderno. |
+| 🌐 **Axios**                | Cliente HTTP para integração com o backend.      |
+| 🖥️ **Node.js / Express**   | API backend responsável pelo CRUD.               |
+| 🧠 **useState / useEffect** | Hooks para controle de estado e efeitos.         |
 
-Backend
+⚙️ Como Executar o Projeto
+🔧 Pré-requisitos
 
-cd backend
-npm install
-npm run dev
+Node.js instalado (v18+)
+
+NPM ou Yarn
+
+🪄 Passo a passo
+
+1 - Clonar o repositório
+
+git clone https://github.com/seuusuario/projeto-pratica-crud.git
+cd projeto-pratica-crud
 
 
-Frontend
+2 - Instalar as dependências
 
 cd frontend
 npm install
-npm run dev
 
 
-O frontend roda geralmente no localhost
-O backend roda na PORT 3000
-
-🔹 Scripts unificados (opcional)
-
-Se configurado na raiz do projeto, é possível rodar frontend e backend juntos:
+3 - Executar o servidor frontend e backend
 
 npm run dev
 
+4 - Acesse no navegador
 
-Usando concurrently para executar os dois servidores simultaneamente.
+http://localhost:5173
 
-Projeto ideal para estudar CRUD, API REST e integração fullstack
+🧠 Aprendizados
 
-Pode ser facilmente expandido para usar banco de dados ou autentic
+Durante o desenvolvimento deste projeto, foram reforçados conceitos importantes:
+
+Componentização e reutilização de lógica no React.
+
+Manipulação de estado global e local.
+
+Comunicação com API via Axios.
+
+Organização de pastas seguindo boas práticas de arquitetura frontend.
+
+Aplicação de estilos modernos com TailwindCSS.
+
+Tratamento de estados vazios e comportamentos condicionais.
+
+🧩 Próximos Passos
+
+🔁 Adicionar persistência com banco de dados (MongoDB ou PostgreSQL).
+
+🔒 Implementar autenticação e controle de usuários.
+
+🌓 Criar alternância de temas (claro/escuro).
+
+📱 Tornar a aplicação 100% responsiva e mobile-first.
+
+👩‍💻 Desenvolvido por
+
+Lia Santos
