@@ -6,113 +6,84 @@ import TarefaDescricao from './components/tarefaDescricao';
 
 function App() {
   const [tarefas, setTarefas] = useState([]);
-  const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
+  const [carregando, setCarregando] = useState(true);
   const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
 
+  // 🔹 Carrega tarefas ao iniciar
   useEffect(() => {
+    const carregarTarefas = async () => {
+      try {
+        const resposta = await api.get("/tarefas");
+        setTarefas(resposta.data);
+      } catch (error) {
+        console.error("Erro ao carregar tarefas:", error);
+        setErro("Erro ao carregar tarefas. Tente novamente.");
+      } finally {
+        setCarregando(false);
+      }
+    };
     carregarTarefas();
   }, []);
 
-  const carregarTarefas = async () => {
-    try {
-      setCarregando(true);
-      setErro(null);
-  const response = await api.get('/tarefas');
-      
-      if (!Array.isArray(response.data)) {
-        throw new Error('Formato de dados inválido');
-      }
-      
-      setTarefas(response.data);
-    } catch (error) {
-      console.error('Erro ao carregar tarefas:', error);
-      
-      setErro(error.response?.data?.erro || 
-        error.message === 'Formato de dados inválido' 
-          ? 'Erro: O servidor retornou dados em formato inválido.'
-          : 'Erro ao carregar tarefas. Verifique se o backend está rodando.'
-      );
-
-      // ✅ Carrega dados de exemplo em caso de erro
-      setTarefas([
-        { 
-          id: 1, 
-          titulo: 'Exemplo (Offline)', 
-          descricao: 'Esta é uma tarefa de exemplo mostrada quando o servidor está offline', 
-          concluida: false,
-          criadaEm: new Date().toISOString()
-        },
-        { 
-          id: 2, 
-          titulo: 'Exemplo 2 (Offline)', 
-          descricao: 'Outra tarefa de exemplo para modo offline', 
-          concluida: true,
-          criadaEm: new Date().toISOString()
-        },
-      ]);
-    } finally {
-      setCarregando(false);
-    }
-  };
-
+  // 🔹 Adiciona nova tarefa
   const handleTarefaAdicionada = (novaTarefa) => {
-    setTarefas(prevTarefas => [novaTarefa, ...prevTarefas]);
+    setTarefas((prev) => [...prev, novaTarefa]);
   };
 
+  // 🔹 Alterna status concluída/pendente
   const handleToggleTarefa = async (id) => {
-    // ✅ Atualização otimista
-    setTarefas(prevTarefas => 
-      prevTarefas.map(t => t.id === id ? { ...t, concluida: !t.concluida } : t)
+    setTarefas((prevTarefas) =>
+      prevTarefas.map((t) =>
+        t.id === id ? { ...t, concluida: !t.concluida } : t
+      )
+    );
+
+    // 🔄 Atualiza também a tarefa exibida no painel lateral
+    setTarefaSelecionada((prevSelecionada) =>
+      prevSelecionada && prevSelecionada.id === id
+        ? { ...prevSelecionada, concluida: !prevSelecionada.concluida }
+        : prevSelecionada
     );
 
     try {
-      const tarefa = tarefas.find(t => t.id === id);
+      const tarefa = tarefas.find((t) => t.id === id);
       if (!tarefa) throw new Error('Tarefa não encontrada');
-      
-  await api.put(`/tarefas/${id}`, { 
-        ...tarefa, 
-        concluida: !tarefa.concluida 
+
+      await api.put(`/tarefas/${id}`, {
+        ...tarefa,
+        concluida: !tarefa.concluida,
       });
     } catch (error) {
       console.error('Erro ao atualizar tarefa:', error);
-      
-      // Reverte mudança se falhar
-      setTarefas(prevTarefas =>
-        prevTarefas.map(t => t.id === id ? { ...t, concluida: !t.concluida } : t)
+
+      // Reverte se falhar
+      setTarefas((prevTarefas) =>
+        prevTarefas.map((t) =>
+          t.id === id ? { ...t, concluida: !t.concluida } : t
+        )
       );
 
-      setErro(error.response?.data?.erro || 'Erro ao atualizar tarefa. Tente novamente.');
-      
-      setTimeout(() => setErro(null), 5000); // Remove erro após 5 segundos
+      setErro(error.response?.data?.erro || 'Erro ao atualizar tarefa.');
+      setTimeout(() => setErro(null), 5000);
     }
   };
 
+  // 🔹 Deleta tarefa
   const handleDeleteTarefa = async (id) => {
     if (!window.confirm('Tem certeza que deseja deletar esta tarefa?')) return;
 
-    // Armazena estado anterior para possível reversão
     const tarefasAntigas = [...tarefas];
-    
-    // Atualização otimista
-    setTarefas(prevTarefas => prevTarefas.filter(t => t.id !== id));
+    setTarefas((prev) => prev.filter((t) => t.id !== id));
 
     try {
-  await api.delete(`/tarefas/${id}`);
-      
-      // Limpa a tarefa selecionada, se necessário
-      if (tarefaSelecionada?.id === id) {
-        setTarefaSelecionada(null);
-      }
+      await api.delete(`/tarefas/${id}`);
+      if (tarefaSelecionada?.id === id) setTarefaSelecionada(null);
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
-      
-      // Reverte para estado anterior
       setTarefas(tarefasAntigas);
-      
-      setErro(error.response?.data?.erro || 'Erro ao deletar tarefa. Tente novamente.');
-      
-      setTimeout(() => setErro(null), 5000); // Remove erro após 5 segundos
+      setErro('Erro ao deletar tarefa. Tente novamente.');
+      setTimeout(() => setErro(null), 5000);
     }
   };
 
@@ -162,93 +133,9 @@ function App() {
             marginBottom: '2rem',
           }}
         >
-          <div
-            style={{
-              background: '#1e293b',
-              borderRadius: '1rem',
-              padding: '1.25rem',
-              boxShadow: '6px 6px 12px #0f172a, -6px -6px 12px #1e293b',
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '1.875rem',
-                fontWeight: 'bold',
-                color: '#10b981',
-                marginBottom: '0.25rem',
-              }}
-            >
-              {tarefas.length}
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-              }}
-            >
-              TOTAL
-            </div>
-          </div>
-          <div
-            style={{
-              background: '#1e293b',
-              borderRadius: '1rem',
-              padding: '1.25rem',
-              boxShadow: '6px 6px 12px #0f172a, -6px -6px 12px #1e293b',
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '1.875rem',
-                fontWeight: 'bold',
-                color: '#06b6d4',
-                marginBottom: '0.25rem',
-              }}
-            >
-              {tarefasConcluidas}
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-              }}
-            >
-              CONCLUÍDAS
-            </div>
-          </div>
-          <div
-            style={{
-              background: '#1e293b',
-              borderRadius: '1rem',
-              padding: '1.25rem',
-              boxShadow: '6px 6px 12px #0f172a, -6px -6px 12px #1e293b',
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '1.875rem',
-                fontWeight: 'bold',
-                color: '#fb923c',
-                marginBottom: '0.25rem',
-              }}
-            >
-              {tarefasPendentes}
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-              }}
-            >
-              PENDENTES
-            </div>
-          </div>
+          <StatCard valor={tarefas.length} cor="#10b981" label="TOTAL" />
+          <StatCard valor={tarefasConcluidas} cor="#06b6d4" label="CONCLUÍDAS" />
+          <StatCard valor={tarefasPendentes} cor="#fb923c" label="PENDENTES" />
         </div>
 
         {/* Mensagem de erro */}
@@ -297,10 +184,46 @@ function App() {
               <TarefaDescricao
                 tarefa={tarefaSelecionada}
                 onClose={() => setTarefaSelecionada(null)}
+                onToggle={handleToggleTarefa} // ✅ Passa controle de toggle
               />
             )}
           </>
         )}
+      </div>
+    </div>
+  );
+}
+
+// 🔸 Componente auxiliar de estatísticas
+function StatCard({ valor, cor, label }) {
+  return (
+    <div
+      style={{
+        background: '#1e293b',
+        borderRadius: '1rem',
+        padding: '1.25rem',
+        boxShadow: '6px 6px 12px #0f172a, -6px -6px 12px #1e293b',
+        textAlign: 'center',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '1.875rem',
+          fontWeight: 'bold',
+          color: cor,
+          marginBottom: '0.25rem',
+        }}
+      >
+        {valor}
+      </div>
+      <div
+        style={{
+          color: '#94a3b8',
+          fontSize: '0.875rem',
+          fontWeight: '600',
+        }}
+      >
+        {label}
       </div>
     </div>
   );

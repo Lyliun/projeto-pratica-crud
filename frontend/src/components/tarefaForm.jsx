@@ -4,6 +4,7 @@ import { api } from "../services/api";
 function TarefaForm({ onTarefaAdicionada }) {
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [prioridade, setPrioridade] = useState("media"); // ✅ NOVO
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
 
@@ -21,11 +22,13 @@ function TarefaForm({ onTarefaAdicionada }) {
     try {
       const response = await api.post('/tarefas', { 
         titulo: titulo.trim(), 
-        descricao: descricao.trim() 
+        descricao: descricao.trim(),
+        prioridade // ✅ ENVIANDO PRIORIDADE
       });
       
       setTitulo("");
       setDescricao("");
+      setPrioridade("media"); // ✅ RESETAR PRIORIDADE
       onTarefaAdicionada(response.data);
       
     } catch (error) {
@@ -151,6 +154,50 @@ function TarefaForm({ onTarefaAdicionada }) {
               e.target.style.boxShadow = 'inset 4px 4px 8px #0f172a, inset -4px -4px 8px #1e293b';
             }}
           />
+        </div>
+
+        {/* ✅ NOVO - SELECT DE PRIORIDADE */}
+        <div>
+          <label style={{
+            display: 'block',
+            fontSize: '0.875rem',
+            fontWeight: '600',
+            color: '#94a3b8',
+            marginBottom: '0.5rem',
+            marginLeft: '0.25rem',
+            letterSpacing: '0.05em'
+          }}>
+            PRIORIDADE
+          </label>
+          <select
+            value={prioridade}
+            onChange={(e) => setPrioridade(e.target.value)}
+            disabled={carregando}
+            style={{
+              width: '100%',
+              padding: '1rem 1.25rem',
+              borderRadius: '1rem',
+              background: '#1e293b',
+              color: '#e2e8f0',
+              border: '1px solid rgba(71, 85, 105, 0.5)',
+              boxShadow: 'inset 4px 4px 8px #0f172a, inset -4px -4px 8px #1e293b',
+              outline: 'none',
+              fontSize: '1rem',
+              transition: 'all 0.3s',
+              opacity: carregando ? 0.6 : 1,
+              cursor: 'pointer'
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = 'inset 6px 6px 12px #0f172a, inset -6px -6px 12px #1e293b';
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = 'inset 4px 4px 8px #0f172a, inset -4px -4px 8px #1e293b';
+            }}
+          >
+            <option value="baixa">🟢 Baixa</option>
+            <option value="media">🟡 Média</option>
+            <option value="alta">🔴 Alta</option>
+          </select>
         </div>
 
         <button
