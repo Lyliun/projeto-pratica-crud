@@ -4,12 +4,12 @@
 
 ---
 
-```markdown
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Node](https://img.shields.io/badge/Node.js-v18+-green)
 ![React](https://img.shields.io/badge/React-v18-blue)
-```
+
+---
 
 ## 🌟 Sobre o Projeto
 
