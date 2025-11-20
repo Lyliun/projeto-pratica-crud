@@ -1,6 +1,6 @@
 import TarefaItem from "./tarefaItem";
 
-function TarefaLista({ tarefas, onToggleStatus, onDelete, onSelect }) {
+function TarefaLista({ tarefas, onToggle, onDelete, onSelect }) {
   if (!tarefas || tarefas.length === 0) {
     const scrollToTop = () => {
       window.scrollTo({
@@ -130,7 +130,7 @@ function TarefaLista({ tarefas, onToggleStatus, onDelete, onSelect }) {
         >
           <TarefaItem
             tarefa={tarefa}
-            onToggle={() => onToggleStatus && onToggleStatus(tarefa.id)} // ✅ corrigido
+            onToggle={() => onToggle && onToggle(tarefa.id)}
             onDelete={() => onDelete && onDelete(tarefa.id)}
           />
         </div>

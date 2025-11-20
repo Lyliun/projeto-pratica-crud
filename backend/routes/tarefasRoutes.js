@@ -5,7 +5,7 @@ import {
   atualizarTarefa, 
   excluirTarefa,
   obterEstatisticas // ✅ NOVO
-} from '../controllers/tarefaController.js';
+} from '../controllers/tarefasController.js';
 
 const router = express.Router();
 

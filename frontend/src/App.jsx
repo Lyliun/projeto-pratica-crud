@@ -77,12 +77,29 @@ function App() {
     setTarefas((prev) => prev.filter((t) => t.id !== id));
 
     try {
-      await api.delete(`/tarefas/${id}`);
+      // Ensure ID is numeric to avoid backend parsing issues
+      const numericId = Number(id);
+      const resp = await api.delete(`/tarefas/${numericId}`);
+      console.info('Tarefa deletada, resposta:', resp.status);
       if (tarefaSelecionada?.id === id) setTarefaSelecionada(null);
     } catch (error) {
+      // Log detailed info to help debugging
       console.error('Erro ao deletar tarefa:', error);
+      console.error('Resposta do servidor:', error.response && {
+        status: error.response.status,
+        data: error.response.data
+      });
+
+      // Reverte estado local
       setTarefas(tarefasAntigas);
-      setErro('Erro ao deletar tarefa. Tente novamente.');
+
+      // Mostrar mensagem mais informativa ao usuário quando possível
+      const serverMsg = error.response?.data?.erro;
+      const status = error.response?.status;
+      setErro(serverMsg
+        ? `Erro ao deletar tarefa: ${serverMsg}`
+        : status ? `Erro ${status} ao deletar tarefa. Tente novamente.` : 'Erro ao deletar tarefa. Tente novamente.'
+      );
       setTimeout(() => setErro(null), 5000);
     }
   };

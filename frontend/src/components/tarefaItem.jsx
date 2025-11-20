@@ -71,7 +71,11 @@ function TarefaItem({ tarefa, onToggle, onDelete }) {
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
         {/* Checkbox */}
         <button
-          onClick={() => onToggle(tarefa.id)}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle && onToggle(tarefa.id);
+          }}
           style={{
             marginTop: '0.25rem',
             width: '1.75rem',
@@ -125,7 +129,12 @@ function TarefaItem({ tarefa, onToggle, onDelete }) {
 
         {/* Botão Deletar */}
         <button
-          onClick={() => onDelete(tarefa.id)}
+          type="button"
+          aria-label="Excluir tarefa"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete && onDelete(tarefa.id);
+          }}
           style={{
             padding: '0.5rem',
             borderRadius: '0.5rem',

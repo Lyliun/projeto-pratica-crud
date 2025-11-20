@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function TarefaDescricao({ tarefa, onClose, onToggleStatus }) {
+// NOTE: accept `onToggle` to match `App.jsx` and `TarefaLista` prop names
+function TarefaDescricao({ tarefa, onClose, onToggle }) {
   const [startY, setStartY] = useState(null);
   const [currentTranslate, setCurrentTranslate] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -213,7 +214,7 @@ function TarefaDescricao({ tarefa, onClose, onToggleStatus }) {
 
           {/* Botão de alternar status */}
           <button
-            onClick={() => onToggleStatus && onToggleStatus(tarefa.id)}
+            onClick={() => onToggle && onToggle(tarefa.id)}
             style={{
               marginTop: "1.5rem",
               width: "100%",
