@@ -28,7 +28,6 @@ A ideia por trás do Simplify é clara: **eliminar a complexidade** e focar no q
 - 🗑️ **Excluir tarefas** - Remova tarefas que não são mais necessárias
 - 📊 **Dashboard de Estatísticas** - Veja em tempo real quantas tarefas você tem (Total, Concluídas, Pendentes)
 - 🎨 **Design Neomorphism** - Interface moderna com efeito dark mode elegante
-- 📱 **Sistema de Prioridades** - As tarefas são dividas em níveis de prioridades: Baixa, Média, Alta
 
 ---
 
