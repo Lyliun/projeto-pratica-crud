@@ -4,6 +4,13 @@
 
 ---
 
+```markdown
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Node](https://img.shields.io/badge/Node.js-v18+-green)
+![React](https://img.shields.io/badge/React-v18-blue)
+```
+
 ## 🌟 Sobre o Projeto
 
 **Simplify** é uma aplicação moderna de gerenciamento de tarefas criada para tornar sua rotina mais organizada e produtiva. Com um design elegante em dark mode e uma interface super intuitiva, você pode adicionar, acompanhar e completar suas tarefas de forma simples e visual.
@@ -257,17 +264,6 @@ Feito com ❤️
 </div>
 
 ---
-
-## 🎯 **Extras: Badges Opcionais**
-
-Você pode adicionar no topo do README (logo após o título):
-
-```markdown
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![Node](https://img.shields.io/badge/Node.js-v18+-green)
-![React](https://img.shields.io/badge/React-v18-blue)
-```
 
 Resultado visual:
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow) ![License](https://img.shields.io/badge/License-MIT-blue) ![Node](https://img.shields.io/badge/Node.js-v18+-green) ![React](https://img.shields.io/badge/React-v18-blue)
