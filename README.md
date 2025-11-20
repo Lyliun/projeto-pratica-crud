@@ -157,7 +157,7 @@ simplify/
 ## 🎨 Capturas de Tela
 
 ### Tela Principal
-![Dashboard](docs/screenshot-dashboard.png)
+![Dashboard](docs/screenshot-dahboard.png)
 *Interface clean com estatísticas em tempo real*
 
 ### Sistema de Prioridades
