@@ -72,8 +72,8 @@ Antes de começar, certifique-se de ter instalado:
 Abra o terminal e execute:
 
 ```bash
-git clone https://github.com/seu-usuario/simplify.git
-cd simplify
+git clone https://github.com/Lyliun/projeto-simplify.git
+cd projeto-pratica-crud
 ```
 
 ---
